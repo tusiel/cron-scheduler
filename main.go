@@ -1,9 +1,11 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"os"
 	"os/signal"
+
+	"./reader"
 )
 
 func main() {
@@ -21,9 +23,15 @@ func main() {
 }
 
 func appCleanup() {
-	log.Println("Shutting down...")
+	fmt.Println("Shutting down...")
 }
 
 func start() {
-	log.Println("Starting...")
+	m := make(map[string]bool)
+
+	reader.ReadInput(os.Stdin, m)
+
+	for v := range m {
+		fmt.Println(v)
+	}
 }
