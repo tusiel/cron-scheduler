@@ -7,7 +7,7 @@ import (
 	"../utils"
 )
 
-// ReadInput reads each line in a os.File and adds each unique key to the cronJobs map
+// ReadInput reads each line in os.File and adds each unique key to the cronJobs map
 func ReadInput(f *os.File, cronJobs map[string]bool) {
 	input := bufio.NewScanner(f)
 
