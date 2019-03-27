@@ -36,3 +36,15 @@ For example, given the above examples as input and the simulated `current time` 
 
 19:00 today - /bin/run_me_sixty_times
 ```
+
+### Usage
+When running the application the first command-line argument represents the `current-time`. That is, the time that the application should compare the cron jobs to. If this argument is omitted, the application will default the `current-time` parameter to the time the application is run. 
+
+When running the application, you can use STDIN to input your cron jobs, delimited by a newline. Each line should have comprise of 3 elements (Hour, Minute and Cron Job). If a line is not valid, it will not be processed, but the application will continue.
+
+Once you are finished, send a `end` command to the application and it will process your request. 
+
+- To run the application in development mode, use the `run.sh` script. 
+
+### Tests
+All tests can be run using the `tests.sh` script.

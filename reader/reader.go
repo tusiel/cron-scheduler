@@ -3,6 +3,7 @@ package reader
 import (
 	"bufio"
 	"os"
+	"strings"
 
 	"../utils"
 )
@@ -14,7 +15,7 @@ func ReadInput(f *os.File, cronJobs map[string]bool) {
 	for input.Scan() {
 		text := input.Text()
 
-		if text == "end" {
+		if strings.ToLower(text) == "end" {
 			break
 		}
 

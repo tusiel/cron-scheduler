@@ -2,4 +2,4 @@
 
 cd $(dirname "$0")
 
-go run -race main.go version.go
+go run -race main.go version.go $1
