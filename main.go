@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"strconv"
+	"strings"
 	"time"
 
 	"./reader"
+	"./scheduler"
 )
 
 func main() {
@@ -28,10 +31,26 @@ func appCleanup() {
 }
 
 func start() {
-	var currentTime string
+	var currentHour int
+	var currentMinute int
 
 	if len(os.Args) == 1 {
-		currentTime = time.Now().Format("15:04")
+		var err error
+
+		split := strings.Split(time.Now().Format("15:04"), ":")
+
+		currentHour, err = strconv.Atoi(split[0])
+		if err != nil {
+			fmt.Print("Unable to parse currentHour\n")
+			os.Exit(1)
+		}
+
+		currentMinute, err = strconv.Atoi(split[1])
+		if err != nil {
+			fmt.Print("Unable to parse currentMinute\n")
+			os.Exit(1)
+		}
+
 	} else {
 		t := os.Args[1]
 
@@ -41,15 +60,25 @@ func start() {
 			os.Exit(1)
 		}
 
-		currentTime = t
+		split := strings.Split(t, ":")
+
+		currentHour, err = strconv.Atoi(split[0])
+		if err != nil {
+			fmt.Print("Unable to parse currentHour\n")
+			os.Exit(1)
+		}
+
+		currentMinute, err = strconv.Atoi(split[1])
+		if err != nil {
+			fmt.Print("Unable to parse currentMinute\n")
+			os.Exit(1)
+		}
 	}
 
-	_ = currentTime
+	cronMap := make(map[string]bool)
+	reader.ReadInput(os.Stdin, cronMap)
 
-	m := make(map[string]bool)
-	reader.ReadInput(os.Stdin, m)
-
-	for v := range m {
-		fmt.Println(v)
+	for _, schedule := range scheduler.ProcessSchedules(cronMap, currentHour, currentMinute) {
+		fmt.Println(schedule)
 	}
 }

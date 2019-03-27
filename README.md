@@ -42,9 +42,12 @@ When running the application the first command-line argument represents the `cur
 
 When running the application, you can use STDIN to input your cron jobs, delimited by a newline. Each line should have comprise of 3 elements (Hour, Minute and Cron Job). If a line is not valid, it will not be processed, but the application will continue.
 
+The hour should be in 24 Hour format. 
+
 Once you are finished, send a `end` command to the application and it will process your request. 
 
 - To run the application in development mode, use the `run.sh` script. 
+- To run the application in production move, use the `build.sh` script which will create a `build` folder with `osx` and `linux` distributions. 
 
 ### Tests
 All tests can be run using the `tests.sh` script.
