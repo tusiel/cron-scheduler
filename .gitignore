@@ -13,3 +13,7 @@
 
 # IntelliJ Directory
 .idea/
+
+# Built distributions and backup files
+build/
+*.bak
