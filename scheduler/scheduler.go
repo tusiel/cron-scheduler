@@ -11,17 +11,21 @@ import (
 func ProcessSchedules(m map[string]bool, currentHour int, currentMinute int) []string {
 	schedules := make([]string, 0)
 
-	for v := range m {
-		var minute int
-		var hour int
-		var err error
+	var minute int
+	var hour int
+	var err error
 
-		split := strings.Split(v, " ")
+	for schedule := range m {
+		split := strings.Split(schedule, " ")
 
-		if split[0] == "*" {
+		scheduleMinute := split[0]
+		scheduleHour := split[1]
+
+		if scheduleMinute == "*" {
 			minute = currentMinute
 
-			if split[1] != "*" {
+			// If the hour isn't "*", then we will be running it on the hour exactly.
+			if scheduleHour != "*" {
 				minute = 0
 			}
 		} else {
@@ -35,6 +39,7 @@ func ProcessSchedules(m map[string]bool, currentHour int, currentMinute int) []s
 		if split[1] == "*" {
 			hour = currentHour
 
+			// If we've gone passed the specified minute, we need to wait until the next hour
 			if minute < currentMinute {
 				hour++
 			}
@@ -46,25 +51,21 @@ func ProcessSchedules(m map[string]bool, currentHour int, currentMinute int) []s
 			}
 		}
 
-		paddedMinute := fmt.Sprintf("%02d", minute)
-
-		today := fmt.Sprintf("%d:%s Today - %s", hour, paddedMinute, split[2])
-		tomorrow := fmt.Sprintf("%d:%s Tomorrow - %s", hour, paddedMinute, split[2])
+		today := fmt.Sprintf("%d:%02d Today - %s", hour, minute, split[2])
+		tomorrow := fmt.Sprintf("%d:%02d Tomorrow - %s", hour, minute, split[2])
 
 		var s string
 
-		if hour > currentHour {
-			// If we're before the hour we're checking, it's going to be today
+		switch {
+		case hour > currentHour: // If we're before the hour we're checking, it's going to be today
 			s = today
-		} else if hour == currentHour {
-			// If the hour is the same as we're comparing, we need to check the minutes
+		case hour == currentHour: // If we're on the hour, we need to check the minutes
 			if currentMinute > minute {
 				s = tomorrow
 			} else {
 				s = today
 			}
-		} else {
-			// If the hour is before now, it's going to be tomorrow
+		default: // If the hour is before now, it's going to be tomorrow
 			s = tomorrow
 		}
 

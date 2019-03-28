@@ -34,7 +34,8 @@ func start() {
 	var currentHour int
 	var currentMinute int
 
-	if len(os.Args) == 1 {
+	missingTimeParam := len(os.Args) == 1
+	if missingTimeParam {
 		var err error
 
 		split := strings.Split(time.Now().Format("15:04"), ":")
@@ -52,15 +53,15 @@ func start() {
 		}
 
 	} else {
-		t := os.Args[1]
+		timeParam := os.Args[1]
 
-		_, err := time.Parse("15:04", t)
+		_, err := time.Parse("15:04", timeParam)
 		if err != nil {
 			fmt.Print("Unable to parse time argument. Make sure it is in the format HH:MM\n")
 			os.Exit(1)
 		}
 
-		split := strings.Split(t, ":")
+		split := strings.Split(timeParam, ":")
 
 		currentHour, err = strconv.Atoi(split[0])
 		if err != nil {

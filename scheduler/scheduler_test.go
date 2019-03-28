@@ -12,6 +12,9 @@ func TestProcessSchedules(t *testing.T) {
 		"* 19 /bin/run_me_sixty_times": true,
 		"09 16 /bin/run_me_custom_1":   true,
 		"11 * /bin/run_me_custom_2":    true,
+		"11 * /bin/run_me_custom_3":    true, // Test that the same cron job can be used
+		"12 * /bin/run_me_custom_3":    true, // with different timings
+		"9 * /bin/run_me_custom_4":     true,
 	}
 
 	expectedResults := []string{
@@ -21,6 +24,9 @@ func TestProcessSchedules(t *testing.T) {
 		"16:10 Today - /bin/run_me_every_minute",
 		"16:09 Tomorrow - /bin/run_me_custom_1",
 		"16:11 Today - /bin/run_me_custom_2",
+		"16:11 Today - /bin/run_me_custom_3",
+		"16:12 Today - /bin/run_me_custom_3",
+		"17:09 Today - /bin/run_me_custom_4",
 	}
 
 	schedules := ProcessSchedules(testMap, 16, 10)
