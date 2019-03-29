@@ -37,6 +37,9 @@ For example, given the above examples as input and the simulated `current time` 
 19:00 today - /bin/run_me_sixty_times
 ```
 
+### Pre-requisites
+This package does not contain any 3rd party libraries, so the only pre-requisite is to have [Go](https://golang.org/dl/) installed. 
+
 ### Usage
 When running the application the first command-line argument represents the `current-time`. That is, the time that the application should compare the cron jobs to. If this argument is omitted, the application will default the `current-time` parameter to the time the application is run. 
 
@@ -48,6 +51,47 @@ Once you are finished, send a `end` command to the application and it will proce
 
 - To run the application in development mode, use the `run.sh` script. 
 - To run the application in production mode, use the `build.sh` script which will create a `build` folder with `darwin` and `linux` distributions.
+
+### Example usages
+The following code snippets show examples usages. 
+
+- `$` denotes the program being executed on the command line
+- `>` denotes input to the CLI 
+- `#` denotes feedback from the CLI. 
+
+**Running from the `run.sh` script:**
+```text
+$ ./run.sh 16:10
+
+> 30 1 /bin/run_me_daily
+> 45 * /bin/run_me_hourly
+> * * /bin/run_me_every_minute
+> * 19 /bin/run_me_sixty_times
+
+> end
+
+# 1:30 Tomorrow - /bin/run_me_daily
+# 16:45 Today - /bin/run_me_hourly
+# 16:10 Today - /bin/run_me_every_minute
+# 19:00 Today - /bin/run_me_sixty_times
+```
+
+**Running from the compiled executables:**
+```text
+$ ./build/darwin/cron-scheduler_0.0.2 16:10
+
+> 30 1 /bin/run_me_daily
+> 45 * /bin/run_me_hourly
+> * * /bin/run_me_every_minute
+> * 19 /bin/run_me_sixty_times
+
+> end
+
+# 1:30 Tomorrow - /bin/run_me_daily
+# 16:45 Today - /bin/run_me_hourly
+# 16:10 Today - /bin/run_me_every_minute
+# 19:00 Today - /bin/run_me_sixty_times
+```
 
 ### Tests
 All tests can be run using the `tests.sh` script.
